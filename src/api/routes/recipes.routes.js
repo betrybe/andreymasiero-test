@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const ensureAuthenticated = require('../middlewares/ensureAuthenticated');
 const CreateRecipeService = require('../services/CreateRecipeService');
+const DeleteRecipeService = require('../services/DeleteRecipeService');
 const ListRecipesService = require('../services/ListRecipesService');
 const RetrieveRecipeService = require('../services/RetrieveRecipeService');
 const UpdateRecipeService = require('../services/UpdateRecipeService');
@@ -57,7 +58,10 @@ recipesRouter.delete('/:id', ensureAuthenticated, async (request, response) => {
 	const { id } = request.params;
 	const { user } = request;
 
-	return response.json({ teste: 'ok' });
+	const deleteRecipeService = new DeleteRecipeService();
+	await deleteRecipeService.execute({ id, user });
+
+	return response.status(204).json();
 });
 
 module.exports = recipesRouter;

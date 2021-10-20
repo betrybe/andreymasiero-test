@@ -68,6 +68,19 @@ class RecipesRepository {
 			await client.close();
 		}
 	}
+
+	async delete(id) {
+		const client = new MongoClient(database.url, { useUnifiedTopology: true });
+		try {
+			await client.connect();
+			const db = client.db(database.name);
+			const collection = db.collection(COLLECTION_NAME);
+			const query = { _id: new ObjectID(id) };
+			await collection.deleteOne(query);
+		} finally {
+			await client.close();
+		}
+	}
 }
 
 module.exports = RecipesRepository;

@@ -8,7 +8,7 @@ class UpdateRecipeService {
 		const recipe = await recipesRepository.findById(id);
 
 		if (recipe.userId !== user.id && user.role !== 'admin') {
-			throw new AppError('Can only update your recipe.');
+			throw new AppError('Can only update your own recipe.');
 		}
 
 		recipe.name = name ? name : recipe.name;
