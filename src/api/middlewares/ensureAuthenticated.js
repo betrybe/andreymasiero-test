@@ -6,7 +6,7 @@ module.exports = function ensureAuthenticated(request, response, next) {
 	const authHeader = request.headers.authorization;
 
 	if (!authHeader) {
-		throw new AppError('jwt malformed.', 401);
+		throw new AppError('Missing Auth Token.', 401);
 	}
 
 	const [, token] = authHeader.split(' ');
@@ -22,6 +22,6 @@ module.exports = function ensureAuthenticated(request, response, next) {
 
 		return next();
 	} catch {
-		throw new AppError('jwt malformed.', 401);
+		throw new AppError('JWT Malformed.', 401);
 	}
 };

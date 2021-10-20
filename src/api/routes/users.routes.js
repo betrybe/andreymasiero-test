@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const CreateUserService = require('../services/CreateUserService');
-const UsersRepository = require('../repositories/UsersRepository');
 const userRouter = Router();
 
 userRouter.post('/', async (request, response) => {
@@ -17,14 +16,6 @@ userRouter.post('/', async (request, response) => {
 	};
 
 	return response.status(201).json({ user: userWithoutPassword });
-});
-
-userRouter.get('/', async (request, response) => {
-	const usersRepository = new UsersRepository();
-
-	const users = await usersRepository.all();
-
-	return response.json(users);
 });
 
 module.exports = userRouter;
