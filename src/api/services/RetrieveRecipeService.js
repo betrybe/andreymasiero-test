@@ -2,14 +2,17 @@ const AppError = require('../errors/AppError');
 const RecipesRepository = require('../repositories/RecipesRepository');
 
 class ListRecipesService {
-  async static execute(id) {
-    const recipe = await RecipesRepository.findById(id);
+  static execute(id) {
+    async function run() {
+      const recipe = await RecipesRepository.findById(id);
 
-    if (!recipe) {
-      throw new AppError('recipe not found', 404);
+      if (!recipe) {
+        throw new AppError('recipe not found', 404);
+      }
+
+      return recipe;
     }
-
-    return recipe;
+    return run();
   }
 }
 

@@ -5,80 +5,101 @@ const Recipe = require('../models/Recipe');
 const COLLECTION_NAME = 'recipes';
 
 class RecipesRepository {
-  async static save(recipe) {
+  static save(recipe) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const result = await collection.insertOne(recipe);
-      const { name, ingredients, preparation, userId, _id } = await result
-        .ops[0];
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const result = await collection.insertOne(recipe);
+        const { name, ingredients, preparation, userId, _id } = await result
+          .ops[0];
 
-      return new Recipe(name, ingredients, preparation, userId, _id);
-    } finally {
-      await client.close();
+        const newRecipe = new Recipe(name, ingredients, preparation, userId);
+        newRecipe._id = _id;
+
+        return newRecipe;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 
-  async static all() {
+  static all() {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const recipes = await collection.find().toArray();
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const recipes = await collection.find().toArray();
 
-      return recipes;
-    } finally {
-      await client.close();
+        return recipes;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 
-  async static findById(id) {
+  static findById(id) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const query = { _id: new ObjectID(id) };
-      const recipe = await collection.findOne(query);
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const query = { _id: new ObjectID(id) };
+        const recipe = await collection.findOne(query);
 
-      return recipe;
-    } finally {
-      await client.close();
+        return recipe;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 
-  async static update(recipe) {
+  static update(recipe) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const query = { _id: new ObjectID(recipe._id) };
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const query = { _id: new ObjectID(recipe._id) };
 
-      const result = await collection.replaceOne(query, recipe);
-      const { name, ingredients, preparation, userId, _id } = await result
-        .ops[0];
+        const result = await collection.replaceOne(query, recipe);
+        const { name, ingredients, preparation, userId, _id } = await result
+          .ops[0];
 
-      return new Recipe(name, ingredients, preparation, userId, _id);
-    } finally {
-      await client.close();
+        const newRecipe = new Recipe(name, ingredients, preparation, userId);
+        newRecipe._id = _id;
+
+        return newRecipe;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 
-  async static delete(id) {
+  static delete(id) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const query = { _id: new ObjectID(id) };
-      await collection.deleteOne(query);
-    } finally {
-      await client.close();
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const query = { _id: new ObjectID(id) };
+        await collection.deleteOne(query);
+      } finally {
+        await client.close();
+      }
     }
+    run();
   }
 }
 

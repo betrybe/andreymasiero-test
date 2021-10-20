@@ -6,9 +6,7 @@ const authRouter = Router();
 authRouter.post('/', async (request, response) => {
   const { email, password } = request.body;
 
-  const authenticateUser = new AuthenticateUserService();
-
-  const tokenCreated = await authenticateUser.execute({
+  const tokenCreated = await AuthenticateUserService.execute({
     email,
     password,
   });

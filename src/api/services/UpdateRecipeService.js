@@ -1,21 +1,22 @@
-const AppError = require('../errors/AppError');
 const RecipesRepository = require('../repositories/RecipesRepository');
+const AuthValidation = require('../validations/AuthValidation');
 
 class UpdateRecipeService {
-  async static execute({ id, name, ingredients, preparation, user }) {
-    const recipe = await RecipesRepository.findById(id);
+  static execute({ id, name, ingredients, preparation, user }) {
+    async function run() {
+      const recipe = await RecipesRepository.findById(id);
 
-    if (recipe.userId !== user.id && user.role !== 'admin') {
-      throw new AppError('Can only update your own recipe.', 401);
+      AuthValidation.authorize({ recipe, user });
+
+      recipe.name = name || recipe.name;
+      recipe.ingredients = ingredients || recipe.ingredients;
+      recipe.preparation = preparation || recipe.preparation;
+
+      const recipeUpdated = await RecipesRepository.update(recipe);
+
+      return recipeUpdated;
     }
-
-    recipe.name = name || recipe.name;
-    recipe.ingredients = ingredients || recipe.ingredients;
-    recipe.preparation = preparation || recipe.preparation;
-
-    const recipeUpdated = await RecipesRepository.update(recipe);
-
-    return recipeUpdated;
+    return run();
   }
 }
 

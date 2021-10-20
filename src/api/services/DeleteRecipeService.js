@@ -1,15 +1,16 @@
-const AppError = require('../errors/AppError');
 const RecipesRepository = require('../repositories/RecipesRepository');
+const AuthValidation = require('../validations/AuthValidation');
 
 class DeleteRecipeService {
-  async static execute({ id, user }) {
-    const recipe = await RecipesRepository.findById(id);
+  static execute({ id, user }) {
+    async function run() {
+      const recipe = await RecipesRepository.findById(id);
 
-    if (recipe.userId !== user.id && user.role !== 'admin') {
-      throw new AppError('Can only delete your own recipe.', 401);
+      AuthValidation.authorize({ recipe, user });
+
+      await RecipesRepository.delete(id);
     }
-
-    await RecipesRepository.delete(id);
+    run();
   }
 }
 

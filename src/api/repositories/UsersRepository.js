@@ -5,33 +5,42 @@ const User = require('../models/User');
 const COLLECTION_NAME = 'users';
 
 class UsersRepository {
-  async static save(user) {
+  static save(user) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const result = await collection.insertOne(user);
-      const { name, email, password, role, _id } = await result.ops[0];
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const result = await collection.insertOne(user);
+        const { name, email, password, role, _id } = await result.ops[0];
 
-      return new User(name, email, password, _id, role);
-    } finally {
-      await client.close();
+        const newUser = new User(name, email, password, role);
+        newUser._id = _id;
+
+        return newUser;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 
-  async static findOne(email) {
+  static findOne(userEmail) {
     const client = new MongoClient(database.url, { useUnifiedTopology: true });
-    try {
-      await client.connect();
-      const db = client.db(database.name);
-      const collection = db.collection(COLLECTION_NAME);
-      const query = { email: email };
-      const result = await collection.findOne(query);
-      return result;
-    } finally {
-      await client.close();
+    async function run() {
+      try {
+        await client.connect();
+        const db = client.db(database.name);
+        const collection = db.collection(COLLECTION_NAME);
+        const query = { email: userEmail };
+        const result = await collection.findOne(query);
+        return result;
+      } finally {
+        await client.close();
+      }
     }
+    return run();
   }
 }
 
