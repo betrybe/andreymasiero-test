@@ -2,6 +2,7 @@ const { Router } = require('express');
 const ensureAuthenticated = require('../middlewares/ensureAuthenticated');
 const CreateUserService = require('../services/CreateUserService');
 const CreateAdminUserService = require('../services/CreateAdminUserService');
+
 const userRouter = Router();
 
 userRouter.post('/', async (request, response) => {

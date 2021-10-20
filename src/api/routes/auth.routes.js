@@ -8,12 +8,12 @@ authRouter.post('/', async (request, response) => {
 
   const authenticateUser = new AuthenticateUserService();
 
-  const token = await authenticateUser.execute({
+  const tokenCreated = await authenticateUser.execute({
     email,
     password,
   });
 
-  return response.json({ token: token });
+  return response.json({ token: tokenCreated });
 });
 
 module.exports = authRouter;

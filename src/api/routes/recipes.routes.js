@@ -18,14 +18,14 @@ recipesRouter.post('/', ensureAuthenticated, async (request, response) => {
   const { name, ingredients, preparation } = request.body;
   const { user } = request;
 
-  const recipe = await CreateRecipeService.execute({
+  const recipeCreated = await CreateRecipeService.execute({
     name,
     ingredients,
     preparation,
     user,
   });
 
-  return response.status(201).json({ recipe: recipe });
+  return response.status(201).json({ recipe: recipeCreated });
 });
 
 recipesRouter.get('/', async (request, response) => {
@@ -75,8 +75,8 @@ recipesRouter.patch(
       const recipe = await UpdateRecipeImageService.execute({
         recipeId: request.params.id,
         imageFilename: request.file.filename,
-        user: user,
-        host: host,
+        user,
+        host,
       });
       return response.json(recipe);
     } catch (err) {
