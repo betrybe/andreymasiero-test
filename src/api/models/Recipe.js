@@ -5,6 +5,7 @@ class Recipe {
 		this.preparation = preparation;
 		this.userId = userId;
 		this._id = id;
+		this.image = '';
 	}
 }
 

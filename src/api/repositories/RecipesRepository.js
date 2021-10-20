@@ -56,7 +56,6 @@ class RecipesRepository {
 			await client.connect();
 			const db = client.db(database.name);
 			const collection = db.collection(COLLECTION_NAME);
-			console.log(recipe);
 			const query = { _id: new ObjectID(recipe._id) };
 
 			const result = await collection.replaceOne(query, recipe);

@@ -8,7 +8,7 @@ class DeleteRecipeService {
 		const recipe = await recipesRepository.findById(id);
 
 		if (recipe.userId !== user.id && user.role !== 'admin') {
-			throw new AppError('Can only delete your own recipe.');
+			throw new AppError('Can only delete your own recipe.', 401);
 		}
 
 		await recipesRepository.delete(id);
