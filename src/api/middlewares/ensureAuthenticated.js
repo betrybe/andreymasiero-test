@@ -3,25 +3,25 @@ const authConfig = require('../config/auth');
 const AppError = require('../errors/AppError');
 
 module.exports = function ensureAuthenticated(request, response, next) {
-	const authHeader = request.headers.authorization;
+  const authHeader = request.headers.authorization;
 
-	if (!authHeader) {
-		throw new AppError('Missing Auth Token.', 401);
-	}
+  if (!authHeader) {
+    throw new AppError('Missing Auth Token.', 401);
+  }
 
-	const [, token] = authHeader.split(' ');
+  const [, token] = authHeader.split(' ');
 
-	try {
-		const decoded = verify(token, authConfig.jwt.secret);
-		const { id, email, role } = decoded;
-		request.user = {
-			id,
-			email,
-			role,
-		};
+  try {
+    const decoded = verify(token, authConfig.jwt.secret);
+    const { id, email, role } = decoded;
+    request.user = {
+      id,
+      email,
+      role,
+    };
 
-		return next();
-	} catch {
-		throw new AppError('JWT Malformed.', 401);
-	}
+    return next();
+  } catch (_) {
+    throw new AppError('JWT Malformed.', 401);
+  }
 };

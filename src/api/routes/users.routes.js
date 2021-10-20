@@ -5,41 +5,37 @@ const CreateAdminUserService = require('../services/CreateAdminUserService');
 const userRouter = Router();
 
 userRouter.post('/', async (request, response) => {
-	const { name, email, password } = request.body;
-	const createUserService = new CreateUserService();
+  const { name, email, password } = request.body;
+  const user = await CreateUserService.execute({ name, email, password });
 
-	const user = await createUserService.execute({ name, email, password });
+  const userWithoutPassword = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
 
-	const userWithoutPassword = {
-		_id: user._id,
-		name: user.name,
-		email: user.email,
-		role: user.role,
-	};
-
-	return response.status(201).json({ user: userWithoutPassword });
+  return response.status(201).json({ user: userWithoutPassword });
 });
 
 userRouter.post('/admin', ensureAuthenticated, async (request, response) => {
-	const { name, email, password } = request.body;
-	const { user } = request;
-	const createAdminUserService = new CreateAdminUserService();
+  const { name, email, password } = request.body;
+  const { user } = request;
+  const admin = await CreateAdminUserService.execute({
+    name,
+    email,
+    password,
+    user,
+  });
 
-	const admin = await createAdminUserService.execute({
-		name,
-		email,
-		password,
-		user,
-	});
+  const adminWithoutPassword = {
+    _id: admin._id,
+    name: admin.name,
+    email: admin.email,
+    role: admin.role,
+  };
 
-	const adminWithoutPassword = {
-		_id: admin._id,
-		name: admin.name,
-		email: admin.email,
-		role: admin.role,
-	};
-
-	return response.status(201).json({ user: adminWithoutPassword });
+  return response.status(201).json({ user: adminWithoutPassword });
 });
 
 module.exports = userRouter;

@@ -1,13 +1,11 @@
 const RecipesRepository = require('../repositories/RecipesRepository');
 
 class ListRecipesService {
-	async execute() {
-		const recipesRepository = new RecipesRepository();
+  async static execute() {
+    const recipes = await RecipesRepository.all();
 
-		const recipes = await recipesRepository.all();
-
-		return recipes;
-	}
+    return recipes;
+  }
 }
 
 module.exports = ListRecipesService;
