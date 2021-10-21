@@ -4,7 +4,7 @@ class Recipe {
     this.ingredients = ingredients;
     this.preparation = preparation;
     this.userId = userId;
-    this._id = null;
+    this.id = null;
     this.image = '';
   }
 }

@@ -10,7 +10,7 @@ userRouter.post('/', async (request, response) => {
   const user = await CreateUserService.execute({ name, email, password });
 
   const userWithoutPassword = {
-    _id: user._id,
+    id: user.id,
     name: user.name,
     email: user.email,
     role: user.role,
@@ -30,7 +30,7 @@ userRouter.post('/admin', ensureAuthenticated, async (request, response) => {
   });
 
   const adminWithoutPassword = {
-    _id: admin._id,
+    id: admin.id,
     name: admin.name,
     email: admin.email,
     role: admin.role,

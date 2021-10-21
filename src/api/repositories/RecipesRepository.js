@@ -13,11 +13,11 @@ class RecipesRepository {
         const db = client.db(database.name);
         const collection = db.collection(COLLECTION_NAME);
         const result = await collection.insertOne(recipe);
-        const { name, ingredients, preparation, userId, _id } = await result
+        const { name, ingredients, preparation, userId, id } = await result
           .ops[0];
 
         const newRecipe = new Recipe(name, ingredients, preparation, userId);
-        newRecipe._id = _id;
+        newRecipe.id = id;
 
         return newRecipe;
       } finally {
@@ -51,7 +51,7 @@ class RecipesRepository {
         await client.connect();
         const db = client.db(database.name);
         const collection = db.collection(COLLECTION_NAME);
-        const query = { _id: new ObjectID(id) };
+        const query = { id: new ObjectID(id) };
         const recipe = await collection.findOne(query);
 
         return recipe;
@@ -69,14 +69,14 @@ class RecipesRepository {
         await client.connect();
         const db = client.db(database.name);
         const collection = db.collection(COLLECTION_NAME);
-        const query = { _id: new ObjectID(recipe._id) };
+        const query = { id: new ObjectID(recipe.id) };
 
         const result = await collection.replaceOne(query, recipe);
-        const { name, ingredients, preparation, userId, _id } = await result
+        const { name, ingredients, preparation, userId, id } = await result
           .ops[0];
 
         const newRecipe = new Recipe(name, ingredients, preparation, userId);
-        newRecipe._id = _id;
+        newRecipe.id = id;
 
         return newRecipe;
       } finally {
@@ -93,7 +93,7 @@ class RecipesRepository {
         await client.connect();
         const db = client.db(database.name);
         const collection = db.collection(COLLECTION_NAME);
-        const query = { _id: new ObjectID(id) };
+        const query = { id: new ObjectID(id) };
         await collection.deleteOne(query);
       } finally {
         await client.close();

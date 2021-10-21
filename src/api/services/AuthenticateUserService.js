@@ -11,13 +11,13 @@ class AuthenticateUserService {
 
       const token = sign(
         {
-          id: user._id,
+          id: user.id,
           email: user.email,
           role: user.role,
         },
         secret,
         {
-          subject: user._id.toString(),
+          subject: user.id.toString(),
           expiresIn,
         },
       );

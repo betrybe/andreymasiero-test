@@ -13,10 +13,10 @@ class UsersRepository {
         const db = client.db(database.name);
         const collection = db.collection(COLLECTION_NAME);
         const result = await collection.insertOne(user);
-        const { name, email, password, role, _id } = await result.ops[0];
+        const { name, email, password, role, id } = await result.ops[0];
 
         const newUser = new User(name, email, password, role);
-        newUser._id = _id;
+        newUser.id = id;
 
         return newUser;
       } finally {
