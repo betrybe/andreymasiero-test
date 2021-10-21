@@ -14,9 +14,6 @@ describe('Crie um endpoint para o cadastro de usuários', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('Cookmaster');
-  });
-
-  beforeEach(async () => {
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
     const admin = {
@@ -26,6 +23,10 @@ describe('Crie um endpoint para o cadastro de usuários', () => {
       role: 'admin',
     };
     await db.collection('users').insertOne(admin);
+  });
+
+  afterAll(async () => {
+    await connection.close();
   });
 
   it('Será validado que o campo "name" é obrigatório', async () => {
