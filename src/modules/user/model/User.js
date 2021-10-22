@@ -13,48 +13,48 @@ class User {
 
   set id(value) {
     ValidationHelper.assertNotNull(value, NOT_NULL_MESSAGE);
-    this.aId = value;
+    this.objId = value;
   }
 
   get id() {
-    return this.aId;
+    return this.objId;
   }
 
   set name(value) {
     ValidationHelper.assertNotNull(value, NOT_NULL_MESSAGE);
-    this.aName = value;
+    this.objName = value;
   }
 
   get name() {
-    return this.aName;
+    return this.objName;
   }
 
   set email(value) {
     ValidationHelper.assertNotNull(value, NOT_NULL_MESSAGE);
     ValidationHelper.assertIsEmail(value, NOT_NULL_MESSAGE);
-    this.aEmail = value;
+    this.objEmail = value;
   }
 
   get email() {
-    return this.aEmail;
+    return this.objEmail;
   }
 
   set role(value) {
     ValidationHelper.assertNotNull(value, NOT_NULL_MESSAGE);
-    this.aRole = value;
+    this.objRole = value;
   }
 
   get role() {
-    return this.aRole;
+    return this.objRole;
   }
 
   set password(value) {
     ValidationHelper.assertNotNull(value, NOT_NULL_MESSAGE);
-    this.aPassword = value;
+    this.objPassword = value;
   }
 
   get password() {
-    return this.aPassword;
+    return this.objPassword;
   }
 
   toJson() {

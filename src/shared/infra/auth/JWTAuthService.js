@@ -21,7 +21,11 @@ class JWTAuthService {
   }
 
   generate({ id, email, role }) {
-    return sign({ id, email, role }, this.SECRET, { expiresIn: '1d' });
+    const token = sign({ id, email, role }, this.SECRET, {
+      subject: id.toString(),
+      expiresIn: '1d',
+    });
+    return token;
   }
 }
 

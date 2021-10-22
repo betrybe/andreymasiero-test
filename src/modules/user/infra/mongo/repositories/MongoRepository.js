@@ -1,9 +1,9 @@
-const { ObjectId } = require('mongodb');
+const { ObjectID } = require('mongodb');
 const User = require('../../../model/User');
 
 class MongoRepository {
   constructor(client) {
-    this.ObjectId = ObjectId;
+    this.ObjectID = ObjectID;
     this.collection = client.collection('users');
   }
 
@@ -24,7 +24,7 @@ class MongoRepository {
   }
 
   generateId() {
-    return new this.ObjectId();
+    return new this.ObjectID();
   }
 }
 
