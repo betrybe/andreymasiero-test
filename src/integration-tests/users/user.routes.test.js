@@ -12,6 +12,17 @@ describe('User route test', () => {
     db = await connection();
   });
 
+  beforeEach(async () => {
+    await db.collection('users').deleteMany({});
+    const users = {
+      name: 'admin',
+      email: 'root@iamyourfather.com',
+      password: 'admin',
+      role: 'admin',
+    };
+    await db.collection('users').insertOne(users);
+  });
+
   after(async () => {
     await db.collection('users').deleteMany({});
   });
@@ -28,6 +39,44 @@ describe('User route test', () => {
         password: 'vader2021',
       })
       .expect('status', 201);
+  });
+
+  it('should not be able to use a route to create an admin user being simple user', async () => {
+    await frisby
+      .post('http://localhost:3000/users/admin', {
+        name: 'Vader',
+        email: 'vader@iamyourfather.com',
+        password: 'vader2021',
+      })
+      .expect('status', 401);
+  });
+
+  it('should be able to use a route to create an admin user', async () => {
+    await frisby
+      .post('http://localhost:3000/login/', {
+        email: 'root@iamyourfather.com',
+        password: 'admin',
+      })
+      .expect('status', 200)
+      .then((response) => {
+        const { body } = response;
+        const { token } = JSON.parse(body);
+        return frisby
+          .setup({
+            request: {
+              headers: {
+                Authorization: token,
+                'Content-Type': 'application/json',
+              },
+            },
+          })
+          .post('http://localhost:3000/users/admin', {
+            name: 'Vader',
+            email: 'vader@iamyourfather.com',
+            password: 'vader2021',
+          })
+          .expect('status', 201);
+      });
   });
 
   it('should have a instance of user routes', async () => {
