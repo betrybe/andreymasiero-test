@@ -58,24 +58,15 @@ class User {
   }
 
   toJson() {
-    return {
-      _id: this.id,
-      name: this.name,
-      email: this.email,
+    return { _id: this.id, 
+      name: this.name, 
+      email: this.email, 
       role: this.role,
-      password: this.password,
-    };
+      password: this.password };
   }
 
   static fromJson({ _id, name, email, password, role }) {
-    const user = new User({
-      id: _id,
-      name,
-      email,
-      password,
-      role,
-    });
-
+    const user = new User({ id: _id, name, email, password, role });
     return user;
   }
 }

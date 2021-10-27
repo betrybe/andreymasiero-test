@@ -19,17 +19,11 @@ class AuthRouter {
   }
 
   create() {
-    this.routes
-      .route('/')
-      .post(
-        rescue(async (request, response) =>
-          this.auth.authenticate(request, response)),
-      );
+    this.routes.route('/').post(rescue(async (req, res) => this.auth.authenticate(req, res)));
   }
 }
 
 const authRoutes = new AuthRouter();
 authRoutes.connectDB();
 authRoutes.create();
-
 module.exports = authRoutes.routes;

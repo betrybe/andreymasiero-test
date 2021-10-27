@@ -17,31 +17,26 @@ class RecipeRouter {
     db().then((client) => {
       this.recipeRepository = new RecipeRepo(client);
       this.authService = new JWTAuthService();
-      this.recipes = new RecipeController(
-        this.recipeRepository,
-        this.authService,
-      );
+      this.recipes = new RecipeController(this.recipeRepository, this.authService);
     });
   }
 
   createRecipesRoutes() {
     this.routes
       .route('/:id')
-      .get(rescue(async (request, response) => this.recipes.getRecipe(request, response)))
-      .put(rescue(async (request, response) => this.recipes.update(request, response)))
-      .delete(rescue(async (request, response) => this.recipes.delete(request, response)));
+      .get(rescue(async (req, res) => this.recipes.getRecipe(req, res)))
+      .put(rescue(async (req, res) => this.recipes.update(req, res)))
+      .delete(rescue(async (req, res) => this.recipes.delete(req, res)));
 
     this.routes
       .route('/')
-      .get(rescue(async (request, response) => this.recipes.list(request, response)))
-      .post(rescue(async (request, response) => this.recipes.create(request, response)));
+      .get(rescue(async (req, res) => this.recipes.list(req, res)))
+      .post(rescue(async (req, res) => this.recipes.create(req, res)));
   }
 
   createRecipeImageRoutes() {
-    this.routes.route('/:id/image').put(
-      upload.single('image'),
-      rescue(async (request, response) => this.recipes.uploadImage(request, response)),
-    );
+    this.routes.route('/:id/image').put(upload.single('image'),
+      rescue(async (req, res) => this.recipes.uploadImage(req, res)));
   }
 }
 
@@ -49,5 +44,4 @@ const recipeRouter = new RecipeRouter();
 recipeRouter.connectDB();
 recipeRouter.createRecipesRoutes();
 recipeRouter.createRecipeImageRoutes();
-
 module.exports = recipeRouter.routes;

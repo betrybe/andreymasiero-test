@@ -8,25 +8,16 @@ class JWTAuthService {
 
   extract(token) {
     if (!token) throw new AuthError('missing auth token');
-
     return verify(token, this.SECRET, (err, decoded) => {
       if (err) throw new AuthError('jwt malformed');
-
-      return {
-        id: decoded.id,
-        email: decoded.email,
-        role: decoded.role,
-      };
+      return { id: decoded.id, email: decoded.email, role: decoded.role };
     });
   }
 
   generate({ id, email, role }) {
-    const token = sign({ id, email, role }, this.SECRET, {
-      subject: id.toString(),
-      expiresIn: '1d',
-    });
+    const token = sign({ id, email, role }, this.SECRET, { expiresIn: '1d' });
     return token;
   }
 }
 
-module.exports = JWTAuthService;
+module.exports = JWTAuthService; 

@@ -13,11 +13,7 @@ class FakeJWTAuthService {
     if (!id || !secret || !email || !role) throw new AuthError('jwt malformed');
     if (secret !== this.SECRET) throw new AuthError('jwt malformed');
 
-    return {
-      id,
-      email,
-      role,
-    };
+    return { id, email, role };
   }
 
   generate({ id, email, role }) {

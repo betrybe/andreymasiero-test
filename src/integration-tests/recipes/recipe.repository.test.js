@@ -56,4 +56,47 @@ describe('Validate RecipeRepository methods', () => {
     );
     expect(recipeRetrieved.userId).to.equal(1);
   });
+
+  it('should be able to retrieve a list of recipes', async () => {
+    repository.save({
+      _id: 1,
+      name: 'Feijão',
+      ingredients: 'feijão, água, alho, louro, sal',
+      preparation: 'coloque tudo na panela de pressão por 30 minutos',
+      userId: 1,
+    });
+
+    repository.save({
+      _id: 2,
+      name: 'Arroz',
+      ingredients: 'arroz, água, alho, cebola, sal',
+      preparation: 'pica tudo coloca na panela, deixe secar a água',
+      userId: 1,
+    });
+
+    const recipes = repository.findAll();
+    expect(recipes).to.be.an('array').to.have.lengthOf(2);
+  });
+
+  it('should be able to delete a recipe', async () => {
+    repository.save({
+      _id: 1,
+      name: 'Feijão',
+      ingredients: 'feijão, água, alho, louro, sal',
+      preparation: 'coloque tudo na panela de pressão por 30 minutos',
+      userId: 1,
+    });
+
+    repository.save({
+      _id: 2,
+      name: 'Arroz',
+      ingredients: 'arroz, água, alho, cebola, sal',
+      preparation: 'pica tudo coloca na panela, deixe secar a água',
+      userId: 1,
+    });
+
+    repository.delete(1);
+    const recipes = repository.findAll();
+    expect(recipes).to.be.an('array').to.have.lengthOf(1);
+  });
 });

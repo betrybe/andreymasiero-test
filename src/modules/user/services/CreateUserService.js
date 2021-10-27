@@ -10,17 +10,8 @@ class CreateUserService {
 
   async create(newId, { name, email, password, role }) {
     await this.validateAlreadyExistsEmail(email);
-
-    const user = new User({
-      id: newId,
-      name,
-      email,
-      password,
-      role,
-    });
-
+    const user = new User({ id: newId, name, email, password, role });
     await this.repository.save(user.toJson());
-
     return user;
   }
 

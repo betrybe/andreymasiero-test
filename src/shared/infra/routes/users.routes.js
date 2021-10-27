@@ -19,23 +19,12 @@ class UserRouter {
   }
 
   create() {
-    this.routes
-      .route('/')
-      .post(
-        rescue(async (request, response) =>
-          this.users.create(request, response)),
-      );
-    this.routes
-      .route('/admin')
-      .post(
-        rescue(async (request, response) =>
-          this.users.createAdmin(request, response)),
-      );
+    this.routes.route('/').post(rescue(async (req, res) => this.users.create(req, res)));
+    this.routes.route('/admin').post(rescue(async (req, res) => this.users.createAdmin(req, res)));
   }
 }
 
 const userRoutes = new UserRouter();
 userRoutes.connectDB();
 userRoutes.create();
-
 module.exports = userRoutes.routes;

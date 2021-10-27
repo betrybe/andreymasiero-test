@@ -76,4 +76,13 @@ describe('Login endpoint', () => {
 
     expect(token).to.equal(`1-${authService.SECRET}-${login.email}-user`);
   });
+
+  it('should be able to extract info from token', async () => {
+    const token = authService.extract(
+      `1-${authService.SECRET}-luke@iamyourfather.com-user`.split('-'),
+    );
+    expect(token.id).to.equal('1');
+    expect(token.email).to.equal('luke@iamyourfather.com');
+    expect(token.role).to.equal('user');
+  });
 });
