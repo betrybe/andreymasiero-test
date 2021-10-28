@@ -3,7 +3,6 @@ const frisby = require('frisby');
 const connection = require('../../shared/infra/mongo/db');
 const UserRoutes = require('../../shared/infra/routes/users.routes');
 const AuthRoutes = require('../../shared/infra/routes/auth.routes');
-const { Router } = require('express');
 
 describe('User route test', () => {
   let db;
